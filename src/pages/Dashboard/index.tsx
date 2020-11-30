@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import api from '../../services/api';
 
@@ -17,7 +17,22 @@ interface Repository {
 const Dashboard: React.FC = () => {
   const [repository, setRepository] = useState('');
   const [inputError, setInputError] = useState('');
-  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [repositories, setRepositories] = useState<Repository[]>(() => {
+    const localData = localStorage.getItem('@GitHubExplorer:respositories');
+
+    if (localData) {
+      return JSON.parse(localData);
+    }
+
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      '@GitHubExplorer:respositories',
+      JSON.stringify(repositories),
+    );
+  }, [repositories]);
 
   async function handleGetRepository(
     event: FormEvent<HTMLFormElement>,
@@ -46,6 +61,7 @@ const Dashboard: React.FC = () => {
     <>
       <img src={logoSVG} alt="GitHub" />
       <Title>Explore repositórios no GitHub</Title>
+
       <Form hasError={!!inputError} onSubmit={handleGetRepository}>
         <input
           value={repository}
@@ -54,7 +70,9 @@ const Dashboard: React.FC = () => {
         />
         <button type="submit">Pesquisar</button>
       </Form>
+
       {inputError && <Error>{inputError}</Error>}
+
       <Repositories>
         {repositories.map((repo) => (
           <a key={repo.full_name} href="teste">
