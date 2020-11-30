@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
-      <img src={logoSVG} alt="GitHub" />
+      <img src={logoSVG} alt="GitHub Explorer" />
       <Title>Explore repositórios no GitHub</Title>
 
       <Form hasError={!!inputError} onSubmit={handleGetRepository}>
