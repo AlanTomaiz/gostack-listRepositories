@@ -99,7 +99,7 @@ export const Issues = styled.div`
 
     div {
       flex: 1;
-      margin: 0 16px;
+      margin-right: 16px;
 
       strong {
         font-size: 20px;
